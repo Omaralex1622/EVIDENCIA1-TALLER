@@ -56,3 +56,62 @@ def main():
 
     while True:
         opcion = int(input("""Menú:
+ 1. Registrar una nota
+        2. Consultas y reportes
+        3. Recuperar una nota
+        4. Cancelar una nota
+        5. Mostrar notas canceladas
+        6. Salir del sistema
+        Favor de escoger una opción válida: """))
+
+        if opcion == 1:
+            # Registrar una nota
+            cliente = input("Ingrese el nombre del cliente (o 'salir' para terminar): ")
+            if cliente.lower() == 'salir':
+                break
+
+            fecha = input("Ingrese la fecha (YYYY-MM-DD): ")
+            nota = []
+
+            while True:
+                agregar_servicio(nota)
+                continuar = input("¿Desea agregar otro servicio? (s/n): ")
+                if continuar.lower() != 's':
+                    break
+
+            total = sum(servicio[1] for servicio in nota)
+
+            print("\nResumen de la nota:")
+            print(f"Folio: {folio_actual}")
+            print(f"Fecha: {fecha}")
+            print(f"Cliente: {cliente}")
+            print("Servicios:")
+            for servicio in nota:
+                print(f"- {servicio[0]}: ${servicio[1]}")
+            print(f"Monto Total: ${total}\n")
+
+            Nota_registrada[folio_actual] = {
+                'Fecha': fecha,
+                'Cliente': cliente,
+                'Servicios': nota,
+                'Monto Total': total,
+                'Cancelada': False
+            }
+
+            folio_actual += 1
+
+        elif opcion == 2:
+            # Consultas y reportes
+            while True:
+                consulta = int(input("""Consulta y reportes:
+                1. Consulta por período
+                2. Consulta por folio
+                3. Volver al menú principal
+                Por favor, selecciona una opción: """))
+
+                if consulta == 1:
+                    # Consulta por período
+                    fecha_inicial = input("Ingresa la fecha inicial (YYYY-MM-DD): ")
+                    fecha_final = input("Ingresa la fecha final (YYYY-MM-DD): ")
+
+                    notas_en_periodo = []
