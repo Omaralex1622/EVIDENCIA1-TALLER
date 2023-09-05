@@ -1,0 +1,58 @@
+Nota_registrada = {}
+
+print("Bienvenido al taller automotriz Hernandez")
+print("Este es nuestro menú")
+print("¿Qué deseas hacer hoy?")
+
+def agregar_servicio(nota):
+    nombre_servicio = input("Ingrese el nombre del servicio: ")
+    while True:
+        try:
+            costo_servicio = float(input("Ingrese el costo del servicio: "))
+            if costo_servicio <= 0:
+                print("El costo debe ser mayor que cero.")
+            else:
+                nota.append((nombre_servicio, costo_servicio))
+                break
+        except ValueError:
+            print("Ingrese un costo válido (número mayor que cero).")
+
+def generar_reporte(numero_nota, detalles):
+    print(f"Detalles de la nota {numero_nota}:")
+    for clave, valor in detalles.items():
+        print(f"{clave}: {valor}")
+
+def cancelar_nota(numero_nota):
+    nota = Nota_registrada.get(numero_nota)
+    if nota:
+        generar_reporte(numero_nota, nota)
+        confirmacion = input(f"¿Deseas cancelar la nota {numero_nota}? (s/n): ").strip().lower()
+        if confirmacion == 's':
+            nota['Cancelada'] = True
+            print(f"La nota {numero_nota} ha sido cancelada.")
+        else:
+            print(f"La nota {numero_nota} no fue cancelada.")
+    else:
+        print(f"La nota con folio {numero_nota} no existe en el sistema.")
+
+def recuperar_nota(numero_nota):
+    nota = Nota_registrada.get(numero_nota)
+    if nota:
+        if nota['Cancelada']:
+            generar_reporte(numero_nota, nota)
+            confirmacion = input(f"¿Deseas recuperar la nota {numero_nota}? (s/n): ").strip().lower()
+            if confirmacion == 's':
+                nota['Cancelada'] = False
+                print(f"La nota {numero_nota} ha sido recuperada.")
+            else:
+                print(f"La nota {numero_nota} no fue recuperada.")
+        else:
+            print(f"La nota {numero_nota} no está cancelada y no se puede recuperar.")
+    else:
+        print(f"La nota con folio {numero_nota} no existe en el sistema.")
+
+def main():
+    folio_actual = 1
+
+    while True:
+        opcion = int(input("""Menú:
