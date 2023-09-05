@@ -115,3 +115,60 @@ def main():
                     fecha_final = input("Ingresa la fecha final (YYYY-MM-DD): ")
 
                     notas_en_periodo = []
+                    for numero_nota, detalles in Nota_registrada.items():
+                        fecha_nota = detalles['Fecha']
+                        if fecha_inicial <= fecha_nota <= fecha_final:
+                            notas_en_periodo.append((numero_nota, fecha_nota))
+
+                    if notas_en_periodo:
+                        print("Notas en el período seleccionado:")
+                        for numero_nota, fecha_nota in notas_en_periodo:
+                            print(f"Nota {numero_nota}, Fecha: {fecha_nota}")
+                    else:
+                        print("No hay notas emitidas para el período seleccionado.")
+
+                elif consulta == 2:
+                    # Consulta por folio
+                    folio_consulta = int(input("Ingresa el folio de la nota a consultar: "))
+
+                    if folio_consulta in Nota_registrada:
+                        nota = Nota_registrada[folio_consulta]
+                        if not nota['Cancelada']:
+                            generar_reporte(folio_consulta, nota)
+                        else:
+                            print(f"La nota {folio_consulta} corresponde a una nota cancelada.")
+                    else:
+                        print(f"La nota con folio {folio_consulta} no existe en el sistema.")
+
+                elif consulta == 3:
+                    break
+
+                else:
+                    print("Opción inválida")
+
+        elif opcion == 3:
+            # Recuperar una nota
+            folio_recuperar = int(input("Ingrese el folio de la nota a recuperar: "))
+            recuperar_nota(folio_recuperar)
+
+        elif opcion == 4:
+            # Cancelar una nota
+            folio_cancelar = int(input("Ingrese el folio de la nota a cancelar: "))
+            cancelar_nota(folio_cancelar)
+
+        elif opcion == 5:
+            # Mostrar notas canceladas
+            print("Notas canceladas:")
+            for numero_nota, detalles in Nota_registrada.items():
+                if detalles['Cancelada']:
+                    print(f"Nota {numero_nota}")
+
+        elif opcion == 6:
+            print("Saliendo del sistema")
+            break
+
+        else:
+            print("Opción inválida, inténtalo de nuevo")
+
+if __name__ == "__main__":
+    main()
